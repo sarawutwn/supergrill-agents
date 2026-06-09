@@ -1,0 +1,11 @@
+{
+  "name": "grill-agents",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "check:sh": "sh -n install.sh",
+    "check:ps": "bun tests/check-powershell-syntax.ts",
+    "check": "bun run check:sh && bun run check:ps && bun test"
+  }
+}
