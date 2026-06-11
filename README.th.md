@@ -1,8 +1,8 @@
-# grill-agents
+# supergrill-agents
 
 [อ่านภาษาอังกฤษ](README.md)
 
-`grill-agents` คือชุด OpenCode agent และ skills สำหรับผู้ใช้ที่ต้องการเริ่ม workflow แบบ Superpowers-first ได้ทันทีในหลายโปรเจกต์
+`supergrill-agents` คือชุด OpenCode agent และ skills สำหรับผู้ใช้ที่ต้องการเริ่ม workflow แบบ Superpowers-first ได้ทันทีในหลายโปรเจกต์
 
 โปรเจกต์นี้ติดตั้ง agent profile และ skills ที่เกี่ยวข้องลงใน global config ของ OpenCode หลังติดตั้งแล้ว OpenCode จะโหลด agent และ skills เหล่านี้ได้จากทุก workspace โดยไม่ต้องคัดลอกไฟล์เข้าไปในแต่ละโปรเจกต์
 
@@ -41,13 +41,13 @@ installer จะวางไฟล์เหล่านี้ไว้ใน Ope
 ### macOS, Linux, หรือ Git Bash
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | sh
 ```
 
 ### Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
 
 ## ตำแหน่งที่ติดตั้ง
@@ -72,27 +72,37 @@ OpenCode จะโหลด global agents จาก `agents/` และ global s
 macOS, Linux, หรือ Git Bash:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
 
 ### ติดตั้งจาก Ref ที่ต้องการ
 
-ใช้ `GRILL_AGENTS_REF` เพื่อติดตั้งจาก branch, tag, หรือ commit ที่ต้องการ
+ใช้ `SUPERGRILL_AGENTS_REF` เพื่อติดตั้งจาก branch, tag, หรือ commit ที่ต้องการ โดยยังรองรับตัวแปรเก่า `GRILL_AGENTS_REF` เป็น fallback เพื่อความเข้ากันได้
 
 macOS, Linux, หรือ Git Bash:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | GRILL_AGENTS_REF="main" sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | SUPERGRILL_AGENTS_REF="main" sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:GRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+$env:SUPERGRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
+
+## License
+
+โปรเจกต์นี้เผยแพร่ภายใต้ MIT License และมีส่วนที่ดัดแปลงจากงาน MIT-licensed เหล่านี้:
+
+- [mattpocock/skills](https://github.com/mattpocock/skills) สำหรับ `skills/caveman`
+- [thaitype/chief](https://github.com/thaitype/chief) สำหรับ `skills/grill-design`
+- [obra/superpowers](https://github.com/obra/superpowers) สำหรับ workflow แบบ Superpowers-first และเนื้อหา `writing-plans` ที่ดัดแปลงเป็น `skills/create-plan`
+
+ดูรายละเอียด license และ upstream notices ได้ที่ [LICENSE](LICENSE) และ [NOTICE.md](NOTICE.md)

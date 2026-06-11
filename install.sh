@@ -2,9 +2,9 @@
 set -eu
 
 REPO_OWNER="sarawutwn"
-REPO_NAME="grill-agents"
-REF="${GRILL_AGENTS_REF:-main}"
-BASE_URL="${GRILL_AGENTS_BASE_URL:-https://raw.githubusercontent.com/$REPO_OWNER/$REPO_NAME}"
+REPO_NAME="supergrill-agents"
+REF="${SUPERGRILL_AGENTS_REF:-${GRILL_AGENTS_REF:-main}}"
+BASE_URL="${SUPERGRILL_AGENTS_BASE_URL:-${GRILL_AGENTS_BASE_URL:-https://raw.githubusercontent.com/$REPO_OWNER/$REPO_NAME}}"
 BASE_URL="${BASE_URL%/}"
 
 if [ -n "${OPENCODE_CONFIG_DIR:-}" ]; then
@@ -35,7 +35,7 @@ download_file "skills/caveman/SKILL.md" "$CONFIG_DIR/skills/caveman/SKILL.md"
 download_file "skills/create-plan/SKILL.md" "$CONFIG_DIR/skills/create-plan/SKILL.md"
 download_file "skills/grill-design/SKILL.md" "$CONFIG_DIR/skills/grill-design/SKILL.md"
 
-echo "Installed grill-agents into: $CONFIG_DIR"
+echo "Installed supergrill-agents into: $CONFIG_DIR"
 echo "- agents/superGrill.md"
 echo "- skills/caveman/SKILL.md"
 echo "- skills/create-plan/SKILL.md"

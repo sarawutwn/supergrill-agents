@@ -1,8 +1,8 @@
-# grill-agents
+# Supergrill Agents for OpenCode
 
 [Read in Thai](README.th.md)
 
-`grill-agents` is an OpenCode agent and skill pack for teams and solo developers who want a Superpowers-first workflow ready to use across projects.
+`supergrill-agents` is an OpenCode agent and skill pack for teams and solo developers who want a Superpowers-first workflow ready to use across projects.
 
 It installs a reusable agent profile and companion skills into your OpenCode global configuration. After installation, OpenCode can load the agent and skills from any workspace without copying files into each project.
 
@@ -41,13 +41,13 @@ The installer places these files in your OpenCode config directory:
 ### macOS, Linux, or Git Bash
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | sh
 ```
 
 ### Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
 
 ## Install Location
@@ -72,27 +72,37 @@ Use `OPENCODE_CONFIG_DIR` when you want to install into a custom OpenCode config
 macOS, Linux, or Git Bash:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
 
 ### Install From a Specific Ref
 
-Use `GRILL_AGENTS_REF` to install from a branch, tag, or commit.
+Use `SUPERGRILL_AGENTS_REF` to install from a branch, tag, or commit. The old `GRILL_AGENTS_REF` variable is still accepted as a compatibility fallback.
 
 macOS, Linux, or Git Bash:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | GRILL_AGENTS_REF="main" sh
+curl -fsSL https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.sh | SUPERGRILL_AGENTS_REF="main" sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:GRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+$env:SUPERGRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/supergrill-agents/main/install.ps1 | iex
 ```
+
+## License
+
+This project is distributed under the MIT License. It includes adapted MIT-licensed material from:
+
+- [mattpocock/skills](https://github.com/mattpocock/skills) for `skills/caveman`.
+- [thaitype/chief](https://github.com/thaitype/chief) for `skills/grill-design`.
+- [obra/superpowers](https://github.com/obra/superpowers) for the Superpowers-first workflow and the `writing-plans` material adapted into `skills/create-plan`.
+
+See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for the full license text and upstream notices.

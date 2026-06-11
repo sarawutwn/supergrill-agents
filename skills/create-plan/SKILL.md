@@ -56,6 +56,8 @@ Write the header for human readers first: use plain language, short paragraphs, 
 
 **Goal:** [One sentence describing what this builds]
 
+**Estimated tasks:** N | **Estimated time:** ~X min | **Touches:** [layers e.g. API / DB / Frontend]
+
 ## Current Problem / Current Solution
 
 [Describe the current problem, current behavior, or current solution in human-readable language. Focus on what exists today and why it is not enough.]
@@ -66,17 +68,16 @@ Write the header for human readers first: use plain language, short paragraphs, 
 
 ## Side by Side
 
-**Current**
+| Scenario | Before | After |
+| -------- | ------ | ----- |
+| [Briefly describe a scenario or flow] | [Current behavior] | [New behavior] |
 
-| Case                                                       | Result             |
-| ---------------------------------------------------------- | ------------------ |
-| [Briefly describe a current case, flow, or decision point] | [Block or Allowed] |
+## Assumptions & Risks
 
-**Proposed**
-
-| Case                                                        | Result             |
-| ----------------------------------------------------------- | ------------------ |
-| [Briefly describe a proposed case, flow, or decision point] | [Block or Allowed] |
+- **Assumed:** [Something the plan takes as true without verifying]
+- **Assumed:** [Another assumption]
+- **Risk:** [What could go wrong if an assumption is wrong]
+- **Risk:** [Another potential failure point]
 
 ## Impact
 
@@ -88,7 +89,21 @@ Write the header for human readers first: use plain language, short paragraphs, 
 ---
 ```
 
-The `Side by Side` section must contain two separate tables: `Current` and `Proposed`. Each table must use only `Case` and `Result` columns. `Case` describes the rough scenario or action. `Result` should be either `Block` or `Allowed`.
+The `Side by Side` section uses a three-column table: `Scenario`, `Before`, and `After`. `Scenario` describes the rough case or action. `Before` and `After` describe the behavior change. This format works for all feature types, not just access control.
+
+## Task Overview
+
+After the header, add a brief task index before the full task list. This lets a reviewer understand the full scope in under 30 seconds without scrolling through every task.
+
+```markdown
+## Task Overview
+
+1. **[Task Name]** — [One-line description]
+2. **[Task Name]** — [One-line description]
+3. **[Task Name]** — [One-line description]
+
+---
+```
 
 ## Task Structure
 

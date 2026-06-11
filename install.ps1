@@ -1,9 +1,21 @@
 $ErrorActionPreference = "Stop"
 
 $RepoOwner = "sarawutwn"
-$RepoName = "grill-agents"
-$Ref = if ($env:GRILL_AGENTS_REF) { $env:GRILL_AGENTS_REF } else { "main" }
-$BaseUrl = if ($env:GRILL_AGENTS_BASE_URL) { $env:GRILL_AGENTS_BASE_URL.TrimEnd("/") } else { "https://raw.githubusercontent.com/$RepoOwner/$RepoName" }
+$RepoName = "supergrill-agents"
+$Ref = if ($env:SUPERGRILL_AGENTS_REF) {
+  $env:SUPERGRILL_AGENTS_REF
+} elseif ($env:GRILL_AGENTS_REF) {
+  $env:GRILL_AGENTS_REF
+} else {
+  "main"
+}
+$BaseUrl = if ($env:SUPERGRILL_AGENTS_BASE_URL) {
+  $env:SUPERGRILL_AGENTS_BASE_URL.TrimEnd("/")
+} elseif ($env:GRILL_AGENTS_BASE_URL) {
+  $env:GRILL_AGENTS_BASE_URL.TrimEnd("/")
+} else {
+  "https://raw.githubusercontent.com/$RepoOwner/$RepoName"
+}
 
 if ($env:OPENCODE_CONFIG_DIR) {
   $ConfigDir = $env:OPENCODE_CONFIG_DIR
@@ -34,7 +46,7 @@ Install-GrillFile -Source "skills/caveman/SKILL.md" -Destination (Join-Path $Con
 Install-GrillFile -Source "skills/create-plan/SKILL.md" -Destination (Join-Path $ConfigDir "skills/create-plan/SKILL.md")
 Install-GrillFile -Source "skills/grill-design/SKILL.md" -Destination (Join-Path $ConfigDir "skills/grill-design/SKILL.md")
 
-Write-Host "Installed grill-agents into: $ConfigDir"
+Write-Host "Installed supergrill-agents into: $ConfigDir"
 Write-Host "- agents/superGrill.md"
 Write-Host "- skills/caveman/SKILL.md"
 Write-Host "- skills/create-plan/SKILL.md"
