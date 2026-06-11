@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const installFiles = [
   ["agents/superGrill.md", "agents/superGrill.md"],
+  ["skills/caveman/SKILL.md", "skills/caveman/SKILL.md"],
   ["skills/create-plan/SKILL.md", "skills/create-plan/SKILL.md"],
   ["skills/grill-design/SKILL.md", "skills/grill-design/SKILL.md"],
 ] as const;

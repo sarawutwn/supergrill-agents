@@ -1,138 +1,97 @@
 # grill-agents
 
-## ภาษาไทย
+[Read in Thai](README.th.md)
 
-`grill-agents` เป็นชุด OpenCode agent และ skills สำหรับ workflow แบบ Superpowers-first planning โดย installer จะติดตั้งไฟล์ต่อไปนี้เข้าไปที่ OpenCode config ของเครื่องผู้ใช้:
+`grill-agents` is an OpenCode agent and skill pack for teams and solo developers who want a Superpowers-first workflow ready to use across projects.
 
-```text
-<opencode-config>/
-  agents/
-    superGrill.md
-  skills/
-    create-plan/
-      SKILL.md
-    grill-design/
-      SKILL.md
-```
+It installs a reusable agent profile and companion skills into your OpenCode global configuration. After installation, OpenCode can load the agent and skills from any workspace without copying files into each project.
 
-### Requirements
+## What This Project Provides
 
-- ติดตั้ง [OpenCode](https://opencode.ai/) แล้ว
-- macOS/Linux/Git Bash ต้องมี `curl` หรือ `wget`
-- Windows แนะนำให้ใช้ PowerShell
-- เพื่อให้ใช้งานได้อย่างเต็มประสิทธิภาพ ควรติดตั้ง skill Superpowers ด้วย: [obra/superpowers](https://github.com/obra/superpowers)
+- `superGrill`: the main OpenCode agent profile for the workflow.
+- `create-plan`: a skill for turning approved designs into clear implementation plans.
+- `grill-design`: a skill for shaping project ideas into structured designs.
+- `caveman`: a compact communication mode for shorter, lower-token responses.
 
-### ติดตั้งบน macOS/Linux/Git Bash
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | sh
-```
-
-### ติดตั้งบน Windows PowerShell
-
-```powershell
-irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
-```
-
-### ตำแหน่งที่ติดตั้ง
-
-- macOS/Linux/Git Bash: `~/.config/opencode`
-- Windows PowerShell: `%APPDATA%\opencode`
-
-OpenCode จะโหลด global agents จาก `agents/` และ global skills จาก `skills/<name>/SKILL.md` ภายใต้ config directory นี้
-
-### อัปเดต
-
-รันคำสั่งติดตั้งเดิมซ้ำได้เลย installer จะดาวน์โหลดไฟล์จาก git ref ปัจจุบันและเขียนทับไฟล์เดิมทันที ไม่มีการสร้าง backup
-
-### การตั้งค่าเพิ่มเติม
-
-เปลี่ยนตำแหน่งติดตั้ง OpenCode config:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
-```
-
-ติดตั้งจาก branch, tag, หรือ commit ที่ต้องการ:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | GRILL_AGENTS_REF="main" sh
-```
-
-สำหรับ PowerShell:
-
-```powershell
-$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
-```
-
-```powershell
-$env:GRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
-```
-
-## English
-
-`grill-agents` is an OpenCode agent and skills pack for a Superpowers-first planning workflow. The installer copies these files into the user's OpenCode config directory:
+The installer places these files in your OpenCode config directory:
 
 ```text
 <opencode-config>/
   agents/
     superGrill.md
   skills/
+    caveman/
+      SKILL.md
     create-plan/
       SKILL.md
     grill-design/
       SKILL.md
 ```
 
-### Requirements
+## Requirements
 
-- [OpenCode](https://opencode.ai/) installed
-- macOS/Linux/Git Bash requires `curl` or `wget`
-- Windows users should use PowerShell
-- For the full workflow, install the Superpowers skill as well: [obra/superpowers](https://github.com/obra/superpowers)
+- [OpenCode](https://opencode.ai/) must be installed.
+- On macOS, Linux, or Git Bash, the installer requires either `curl` or `wget`.
+- On Windows, run the installer with PowerShell.
+- For the full workflow, install the Superpowers skill set as well: [obra/superpowers](https://github.com/obra/superpowers).
+- For local development and testing in this repository, use [Bun](https://bun.sh/).
 
-### Install on macOS/Linux/Git Bash
+## Installation
+
+### macOS, Linux, or Git Bash
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | sh
 ```
 
-### Install on Windows PowerShell
+### Windows PowerShell
 
 ```powershell
 irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
 ```
 
-### Install location
+## Install Location
 
-- macOS/Linux/Git Bash: `~/.config/opencode`
+By default, the installer writes files to the global OpenCode config directory for your operating system:
+
+- macOS, Linux, or Git Bash: `~/.config/opencode`
 - Windows PowerShell: `%APPDATA%\opencode`
 
 OpenCode loads global agents from `agents/` and global skills from `skills/<name>/SKILL.md` inside this config directory.
 
-### Updating
+## Updating
 
-Run the same install command again. The installer downloads files from the selected git ref and overwrites existing files immediately. It does not create backups.
+Run the same installation command again to update the files. The installer downloads the selected git ref and overwrites the existing files immediately. It does not create backups.
 
-### Configuration
+## Configuration
 
-Override the OpenCode config install path:
+### Change the OpenCode Config Directory
+
+Use `OPENCODE_CONFIG_DIR` when you want to install into a custom OpenCode config location.
+
+macOS, Linux, or Git Bash:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | OPENCODE_CONFIG_DIR="$HOME/.config/opencode" sh
 ```
 
-Install from a specific branch, tag, or commit:
+Windows PowerShell:
+
+```powershell
+$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
+```
+
+### Install From a Specific Ref
+
+Use `GRILL_AGENTS_REF` to install from a branch, tag, or commit.
+
+macOS, Linux, or Git Bash:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.sh | GRILL_AGENTS_REF="main" sh
 ```
 
-For PowerShell:
-
-```powershell
-$env:OPENCODE_CONFIG_DIR="$env:APPDATA\opencode"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex
-```
+Windows PowerShell:
 
 ```powershell
 $env:GRILL_AGENTS_REF="main"; irm https://raw.githubusercontent.com/sarawutwn/grill-agents/main/install.ps1 | iex

@@ -31,10 +31,12 @@ download_file() {
 }
 
 download_file "agents/superGrill.md" "$CONFIG_DIR/agents/superGrill.md"
+download_file "skills/caveman/SKILL.md" "$CONFIG_DIR/skills/caveman/SKILL.md"
 download_file "skills/create-plan/SKILL.md" "$CONFIG_DIR/skills/create-plan/SKILL.md"
 download_file "skills/grill-design/SKILL.md" "$CONFIG_DIR/skills/grill-design/SKILL.md"
 
 echo "Installed grill-agents into: $CONFIG_DIR"
 echo "- agents/superGrill.md"
+echo "- skills/caveman/SKILL.md"
 echo "- skills/create-plan/SKILL.md"
 echo "- skills/grill-design/SKILL.md"
