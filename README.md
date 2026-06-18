@@ -11,6 +11,7 @@ It installs a reusable agent profile and companion skills into your OpenCode glo
 - `superGrill`: the main OpenCode agent profile for the workflow.
 - `create-plan`: a skill for turning approved designs into clear implementation plans.
 - `grill-design`: a skill for shaping project ideas into structured designs.
+- `guideline`: a skill for avoiding common LLM coding mistakes with surgical, verifiable changes.
 - `caveman`: a compact communication mode for shorter, lower-token responses.
 
 The installer places these files in your OpenCode config directory:
@@ -25,6 +26,8 @@ The installer places these files in your OpenCode config directory:
     create-plan/
       SKILL.md
     grill-design/
+      SKILL.md
+    guideline/
       SKILL.md
 ```
 

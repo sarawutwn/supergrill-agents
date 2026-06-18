@@ -45,9 +45,11 @@ Install-GrillFile -Source "agents/superGrill.md" -Destination (Join-Path $Config
 Install-GrillFile -Source "skills/caveman/SKILL.md" -Destination (Join-Path $ConfigDir "skills/caveman/SKILL.md")
 Install-GrillFile -Source "skills/create-plan/SKILL.md" -Destination (Join-Path $ConfigDir "skills/create-plan/SKILL.md")
 Install-GrillFile -Source "skills/grill-design/SKILL.md" -Destination (Join-Path $ConfigDir "skills/grill-design/SKILL.md")
+Install-GrillFile -Source "skills/guideline/SKILL.md" -Destination (Join-Path $ConfigDir "skills/guideline/SKILL.md")
 
 Write-Host "Installed supergrill-agents into: $ConfigDir"
 Write-Host "- agents/superGrill.md"
 Write-Host "- skills/caveman/SKILL.md"
 Write-Host "- skills/create-plan/SKILL.md"
 Write-Host "- skills/grill-design/SKILL.md"
+Write-Host "- skills/guideline/SKILL.md"

@@ -11,6 +11,7 @@
 - `superGrill`: agent profile หลักสำหรับ workflow นี้
 - `create-plan`: skill สำหรับแปลง design ที่อนุมัติแล้วให้เป็น implementation plan ที่ชัดเจน
 - `grill-design`: skill สำหรับจัดรูปความคิดของโปรเจกต์ให้เป็น design ที่เป็นระบบ
+- `guideline`: skill สำหรับลดข้อผิดพลาดทั่วไปของ LLM ขณะเขียนโค้ด ด้วยการแก้แบบจำกัดขอบเขตและตรวจสอบได้
 - `caveman`: โหมดสื่อสารแบบกระชับ ช่วยลดจำนวน token และตัดคำฟุ่มเฟือย
 
 installer จะวางไฟล์เหล่านี้ไว้ใน OpenCode config directory:
@@ -25,6 +26,8 @@ installer จะวางไฟล์เหล่านี้ไว้ใน Ope
     create-plan/
       SKILL.md
     grill-design/
+      SKILL.md
+    guideline/
       SKILL.md
 ```
 
