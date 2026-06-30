@@ -1,0 +1,23 @@
+{
+  "skill_name": "retro-man",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "We just finished a session implementing the checkout usecase. The important durable decision is that any checkout flow writing to transaction.db must go through the TransactionService boundary and must document rollback behavior when multiple tables are touched. Please close the session with retro-man.",
+      "expected_output": "Creates docs/_rules/contracts/YYYYMMDDHHMM-checkout-usecase.md with YAML frontmatter, scope including checkout/usecase/transaction.db, at least one rule block, evidence, uncertainties, and updates docs/_rules/index.md as a compact routing table entry with title link, inline status/date/scope, and one short summary sentence.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "We only fixed a typo in a button label and renamed one local variable. No behavior, contract, or process changed. Run retro-man before I stop.",
+      "expected_output": "Reports 'No durable contract to record.' and does not create docs/_rules/contracts or update docs/_rules/index.md unless they already needed no changes.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We completed a refactor that changes how auth sessions are renewed. Future work must rotate refresh tokens on every renewal, keep access tokens short-lived, and avoid storing token material in localStorage. There is an older auth contract that this new decision supersedes. Use retro-man to record the session.",
+      "expected_output": "Creates one new session contract with status active, optional supersedes field if the older contract path is known, multiple rule blocks or one precise rule block, scope including auth/session/tokens, and a compact index entry sorted active-first/newest-first with supersedes shown only when present.",
+      "files": []
+    }
+  ]
+}

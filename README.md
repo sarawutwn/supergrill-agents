@@ -6,19 +6,38 @@
 
 It installs a reusable agent profile and companion skills into your OpenCode global configuration. After installation, OpenCode can load the agent and skills from any workspace without copying files into each project.
 
+## How To Use
+
+1. `@superGrill` - start the planning loop: explore project context -> grill decisions -> define goals -> write the spec -> create TODO-ready implementation tasks. Expect approval or question gates at each step.
+2. `@autopilot` - execute an approved `create-plan` implementation plan. It orchestrates `general` subagents, sequences dependent tasks, runs verification, and finishes with a `scrutinize` review.
+3. `/retro-man` - after meaningful work, capture durable lessons, contracts, and rules into `docs/_rules` for future design reviews.
+
 ## What This Project Provides
 
+### Agents
+
 - `superGrill`: the main OpenCode agent profile for the workflow.
+- `autopilot`: an orchestration agent for executing approved implementation plans.
+- `explore`: a read-only codebase navigation subagent.
+- `general`: a general-purpose subagent for parallel execution lanes.
+
+### Skills
+
+- `caveman`: a compact communication mode for shorter, lower-token responses.
 - `create-plan`: a skill for turning approved designs into clear implementation plans.
 - `grill-design`: a skill for shaping project ideas into structured designs.
 - `guideline`: a skill for avoiding common LLM coding mistakes with surgical, verifiable changes.
-- `caveman`: a compact communication mode for shorter, lower-token responses.
+- `retro-man`: a manual-only post-session contract writer.
+- `scrutinize`: an outsider-perspective review skill for plans, PRs, diffs, designs, and code changes.
 
 The installer places these files in your OpenCode config directory:
 
 ```text
 <opencode-config>/
   agents/
+    autopilot.md
+    explore.md
+    general.md
     superGrill.md
   skills/
     caveman/
@@ -28,6 +47,12 @@ The installer places these files in your OpenCode config directory:
     grill-design/
       SKILL.md
     guideline/
+      SKILL.md
+    retro-man/
+      SKILL.md
+      scripts/
+        update-rules-index.mjs
+    scrutinize/
       SKILL.md
 ```
 

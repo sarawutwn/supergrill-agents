@@ -95,12 +95,19 @@ The `Side by Side` section uses a three-column table: `Scenario`, `Before`, and 
 
 After the header, add a brief task index before the full task list. This lets a reviewer understand the full scope in under 30 seconds without scrolling through every task.
 
+The overview must also make the TDD discipline unavoidable for whoever executes the plan. Each implementation task should be summarized as a TDD slice: the failing behavior/test it starts with, the minimal code it drives, and the verification command that proves it. Do not split "write tests" and "implement code" into separate broad phases when they belong to the same behavior.
+
+Default to a parallel-first plan. Identify independent task lanes and make the executor try parallel sub-agents first; only mark a task sequential when there is a concrete dependency or race risk.
+
 ```markdown
 ## Task Overview
 
-1. **[Task Name]** — [One-line description]
-2. **[Task Name]** — [One-line description]
-3. **[Task Name]** — [One-line description]
+> **For implementation tasks:** REQUIRED SUB-SKILL: Use superpowers:test-driven-development before editing production code. Each task is a RED -> GREEN -> REFACTOR slice.
+> **Parallel-first:** Spawn separate sub-agents for independent lanes. Do not parallelize tasks that can race on the same files, migrations, generated artifacts, or shared state.
+
+1. **[Task Name]** — Lane A | Can run together: [Task N, Task M] | Must wait for: [none/task] | TDD slice: [failing test] -> [minimal code] -> [verification]
+2. **[Task Name]** — Lane B | Can run together: [Task N] | Must wait for: [none/task] | TDD slice: [failing test] -> [minimal code] -> [verification]
+3. **[Task Name]** — Sequential if needed | Can run together: [none] | Must wait for: [task/reason] | TDD slice: [failing test] -> [minimal code] -> [verification]
 
 ---
 ```
@@ -116,6 +123,16 @@ After the header, add a brief task index before the full task list. This lets a 
 - Modify: `exact/path/to/existing.py:123-145`
 - Test: `tests/exact/path/to/test.py`
 
+**Parallelization:**
+
+- Can run with: `Task X`, `Task Y`, or `none`
+- Must wait for: `Task Z` or `none`
+- Race risk: [same files/shared state/migration/generated artifact, or `none`]
+
+- [ ] **Step 0: Load the TDD discipline**
+
+Use `superpowers:test-driven-development` before editing production code. This task must follow RED -> GREEN -> REFACTOR unless it is explicitly docs/config-only; if it is docs/config-only, say why and include the smallest verification command instead.
+
 - [ ] **Step 1: Write the failing test**
 
 ```python
@@ -123,6 +140,22 @@ def test_specific_behavior():
     result = function(input)
     assert result == expected
 ```
+
+- [ ] **Step 2: Run the test and confirm it fails for the expected reason**
+
+Run the most targeted test command for the test file above. Expected result: FAIL because the behavior is missing, not because of syntax, setup, or import errors.
+
+- [ ] **Step 3: Implement the minimal code**
+
+Change only the production code needed to pass the failing test. Do not add adjacent behavior, cleanup, or speculative options yet.
+
+- [ ] **Step 4: Run the test and confirm it passes**
+
+Run the same targeted test command. Expected result: PASS with no new warnings or unrelated failures.
+
+- [ ] **Step 5: Refactor only after green**
+
+Refactor only after the targeted test is green. Keep the behavior unchanged and rerun the targeted test after the refactor.
 
 - Batch execution with checkpoints for review
 ````
