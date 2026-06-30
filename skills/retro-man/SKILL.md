@@ -24,7 +24,7 @@ When invoked after meaningful work:
 2. Decide whether the completed session produced any durable rule, contract, or short spec.
 3. If there is no durable contract to record, do not create a file.
 4. If there is a durable contract, create one session contract file under `docs/_rules/contracts/`.
-5. Regenerate the marked contract list in `docs/_rules/index.md`.
+5. Regenerate the full marked contract list in `docs/_rules/index.md` from every existing contract file.
 6. Report changed paths. Do not commit.
 
 ## What counts as durable
@@ -230,11 +230,28 @@ Otherwise, write autonomously.
 
 After writing a contract file, regenerate `docs/_rules/index.md` from contract metadata.
 
+Never rebuild `docs/_rules/index.md` from only the contracts created in the current session. The index is a full routing table for all durable records, so partial rewrites hide old contracts from future `grill-design` sessions.
+
+Before updating the index, List `docs/_rules/contracts/*.md` from the filesystem. Do not rely only on `git status`, codegraph, or diff output because many projects ignore `docs/`, and ignored contract files still belong in the index.
+
+Use the helper script whenever it is available. Resolve it in this order:
+
+1. Project install: `.opencode/skills/retro-man/scripts/update-rules-index.mjs`
+2. Global OpenCode install: `$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs`
+
 If this skill is installed at `.opencode/skills/retro-man/`, run:
 
 ```bash
 bun .opencode/skills/retro-man/scripts/update-rules-index.mjs
 ```
+
+If only the global install exists, run:
+
+```bash
+bun "$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs"
+```
+
+Run the helper from the repository root so it resolves `docs/_rules` correctly.
 
 The index should:
 
@@ -268,7 +285,11 @@ Index summary guidance:
 - Prefer domain keywords in index scope over long file paths.
 - Keep concrete file paths in the contract body and frontmatter.
 
-If the helper script is unavailable, update the marker block manually using the same format.
+After the helper runs, compare its output count with the filesystem count of `docs/_rules/contracts/*.md`. If the helper output count is lower than the filesystem contract count, stop and investigate before reporting success.
+
+The helper is fail-closed. If any markdown file under `docs/_rules/contracts/` has missing frontmatter or missing required metadata, the helper must exit non-zero and must not rewrite `docs/_rules/index.md`. Fix the contract metadata or ask the user before continuing; do not delete or ignore an invalid contract to make the index update pass.
+
+If the helper script is unavailable, update the marker block manually using the same format only after reading every markdown file under `docs/_rules/contracts/`. Manual fallback must include every parseable contract with `title` and `created_at`, not just newly created files.
 
 ## Git policy
 

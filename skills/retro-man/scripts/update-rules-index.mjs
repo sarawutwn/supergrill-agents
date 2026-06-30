@@ -35,13 +35,21 @@ function ensureStructure() {
 }
 
 function parseFrontmatter(markdown, filePath) {
+  const relativeFile = path.relative(RULES_DIR, filePath).split(path.sep).join("/");
+
   if (!markdown.startsWith("---\n")) {
-    return null;
+    return {
+      contract: null,
+      errors: [`${relativeFile}: missing YAML frontmatter`],
+    };
   }
 
   const end = markdown.indexOf("\n---", 4);
   if (end === -1) {
-    return null;
+    return {
+      contract: null,
+      errors: [`${relativeFile}: unterminated YAML frontmatter`],
+    };
   }
 
   const yaml = markdown.slice(4, end).split("\n");
@@ -80,7 +88,7 @@ function parseFrontmatter(markdown, filePath) {
     data[key] = parseInlineValue(value);
   }
 
-  data.file = path.relative(RULES_DIR, filePath).split(path.sep).join("/");
+  data.file = relativeFile;
   data.status = data.status || "active";
   data.summary = arrayify(data.summary).slice(0, 3);
   data.index_summary = data.index_summary || "";
@@ -88,7 +96,31 @@ function parseFrontmatter(markdown, filePath) {
   data.supersedes = arrayify(data.supersedes);
   data.related = arrayify(data.related);
 
-  return data;
+  return {
+    contract: data,
+    errors: validateContractMetadata(data),
+  };
+}
+
+function validateContractMetadata(contract) {
+  const errors = [];
+  const requiredFields = ["title", "slug", "created_at", "session_type", "scope", "summary", "status"];
+
+  for (const field of requiredFields) {
+    const value = contract[field];
+    if (Array.isArray(value)) {
+      if (value.length === 0) {
+        errors.push(`${contract.file}: missing required field \`${field}\``);
+      }
+      continue;
+    }
+
+    if (!value) {
+      errors.push(`${contract.file}: missing required field \`${field}\``);
+    }
+  }
+
+  return errors;
 }
 
 function parseInlineValue(value) {
@@ -126,15 +158,27 @@ function readContracts() {
     return [];
   }
 
-  return readdirSync(CONTRACTS_DIR)
+  const results = readdirSync(CONTRACTS_DIR)
     .filter((fileName) => fileName.endsWith(".md"))
     .map((fileName) => path.join(CONTRACTS_DIR, fileName))
     .map((filePath) => {
       const markdown = readFileSync(filePath, "utf8");
       return parseFrontmatter(markdown, filePath);
-    })
-    .filter(Boolean)
-    .filter((contract) => contract.title && contract.created_at);
+    });
+
+  const errors = results.flatMap((result) => result.errors);
+  if (errors.length > 0) {
+    throw new ContractMetadataError(errors);
+  }
+
+  return results.map((result) => result.contract);
+}
+
+class ContractMetadataError extends Error {
+  constructor(errors) {
+    super(["Invalid docs/_rules contract metadata:", ...errors.map((error) => `- ${error}`)].join("\n"));
+    this.name = "ContractMetadataError";
+  }
 }
 
 function buildIndexBlock(contracts) {
@@ -290,9 +334,18 @@ function updateIndex(block) {
   writeFileSync(INDEX_PATH, next, "utf8");
 }
 
-ensureStructure();
-const contracts = readContracts();
-const block = buildIndexBlock(contracts);
-updateIndex(block);
+try {
+  ensureStructure();
+  const contracts = readContracts();
+  const block = buildIndexBlock(contracts);
+  updateIndex(block);
 
-console.log(`Updated ${path.relative(ROOT, INDEX_PATH)} from ${contracts.length} contract file(s).`);
+  console.log(`Updated ${path.relative(ROOT, INDEX_PATH)} from ${contracts.length} contract file(s).`);
+} catch (error) {
+  if (error instanceof ContractMetadataError) {
+    console.error(error.message);
+    process.exitCode = 1;
+  } else {
+    throw error;
+  }
+}
