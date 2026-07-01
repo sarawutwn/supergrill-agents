@@ -59,7 +59,7 @@ Follow the brainstorming skill's sections, with these replacements:
    - If you believe you already understand something, turn that understanding into a grill-design recheck question with options, recommendation, and self-check. Wait for confirmation before moving on.
    - Resolve dependencies between decisions in order: upstream decisions first, downstream decisions after.
    - Continue asking until there are no remaining ambiguities, no unconfirmed assumptions, and no unresolved branches in the design tree.
-   - Minimum question threshold: ask **at least 3 clarifying questions** per request, regardless of how clear the request seems.
+   - Question count is evidence-driven: keep asking while decisions, assumptions, or branches remain unresolved; stop once the design is clear enough to plan.
 
 3. **Propose approaches and present design**
    - Keep options concise.

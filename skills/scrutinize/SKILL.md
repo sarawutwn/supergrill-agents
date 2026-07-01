@@ -1,6 +1,6 @@
 ---
 name: scrutinize
-description: Outsider-perspective end-to-end review of a plan, PR, or code change. First questions intent and whether a simpler/more elegant approach would achieve the same goal, then traces the actual code path (not just the diff) to verify the change does what it claims. Output is concise, actionable, and every call carries its rationale. Trigger on /scrutinize and proactively whenever the user asks to review, audit, sanity-check, or get a second opinion on a plan, PR, diff, design doc, or proposed code change.
+description: Outsider review for a plan, PR, diff, design doc, or code change. Use on /scrutinize or when the user asks to review, audit, sanity-check, or get a second opinion; question whether the change should exist, trace real code paths, and report actionable findings with rationale.
 ---
 
 # Scrutinize
@@ -54,6 +54,8 @@ Output one tight section per finding. Order by severity (blocker → major → n
 - **Suggested change** — concrete, minimal.
 
 Close with a one-line verdict: ship / fix-then-ship / rework / reject — with the single biggest reason.
+
+Completion criterion: every behavior claim you reviewed is either traced and confirmed, traced and refuted, or explicitly listed as not verifiable with the available artifact.
 
 ## Operating rules
 

@@ -7,9 +7,13 @@ const installedFiles = [
   "agents/superGrill.md",
   "skills/caveman/SKILL.md",
   "skills/create-plan/SKILL.md",
+  "skills/create-plan/references/plan-template.md",
+  "skills/create-plan/references/task-template.md",
   "skills/grill-design/SKILL.md",
   "skills/guideline/SKILL.md",
   "skills/retro-man/SKILL.md",
+  "skills/retro-man/references/contract-template.md",
+  "skills/retro-man/references/index-format.md",
   "skills/retro-man/scripts/update-rules-index.mjs",
   "skills/scrutinize/SKILL.md",
 ].sort();

@@ -42,16 +42,22 @@ The installer places these files in your OpenCode config directory:
   skills/
     caveman/
       SKILL.md
-    create-plan/
-      SKILL.md
+	    create-plan/
+	      SKILL.md
+	      references/
+	        plan-template.md
+	        task-template.md
     grill-design/
       SKILL.md
     guideline/
       SKILL.md
-    retro-man/
-      SKILL.md
-      scripts/
-        update-rules-index.mjs
+	    retro-man/
+	      SKILL.md
+	      references/
+	        contract-template.md
+	        index-format.md
+	      scripts/
+	        update-rules-index.mjs
     scrutinize/
       SKILL.md
 ```

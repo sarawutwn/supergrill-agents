@@ -1,6 +1,6 @@
 ---
 name: retro-man
-description: Manual-only post-session contract writer. Use this skill only when the user explicitly names retro-man or directly asks to run retro-man. Do not infer usage from phrases like closing a session, finishing work, or creating docs unless retro-man is explicitly requested. When manually invoked, record durable rules, contracts, and short specs into docs/_rules for future grill-design review.
+description: Manual-only post-session contract writer. Invoke only when the user explicitly names retro-man or asks to run retro-man; then record durable rules, contracts, and short specs into docs/_rules for future grill-design review.
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,31 +10,40 @@ metadata:
 
 # Retro-Man
 
-`retro-man` is a manual-only post-session contract writer. Its job is to preserve durable rules, contracts, and short specs from completed work so future sessions can discover and discuss them.
+`retro-man` records durable project contracts after meaningful work. It writes grounded records that future `grill-design` sessions can read before proposing changes.
 
-Do not use this skill unless the user explicitly invokes `retro-man` by name or directly asks to run `retro-man`.
+Do not infer this skill from phrases like "finish up", "close the session", or "write docs" unless the user explicitly names `retro-man` or directly asks to run it.
 
-This skill does not detect or argue about conflicts. Conflict detection belongs to a separate design/review skill such as `grill-design`. `retro-man` only writes clear, grounded records that make later conflict detection possible.
+Conflict detection belongs to design/review skills such as `grill-design`. `retro-man` only records evidence-backed contracts and uncertainties.
 
-## Core responsibilities
+## Core Workflow
 
-When invoked after meaningful work:
+When invoked:
 
-1. Inspect the repository state lightly so the record is grounded in artifacts, not memory alone.
-2. Decide whether the completed session produced any durable rule, contract, or short spec.
-3. If there is no durable contract to record, do not create a file.
-4. If there is a durable contract, create one session contract file under `docs/_rules/contracts/`.
-5. Regenerate the full marked contract list in `docs/_rules/index.md` from every existing contract file.
-6. Report changed paths. Do not commit.
+1. Inspect `git status --short`.
+2. Inspect relevant diffs or changed files.
+3. Read source/docs files that support the potential contract.
+4. Decide whether the completed work produced a durable rule, contract, or short spec.
+5. If nothing durable exists, create no files and respond exactly:
 
-## What counts as durable
+   ```text
+   No durable contract to record.
+   ```
 
-Record constraints that future agents must respect, such as:
+6. If a durable contract exists, create one file under `docs/_rules/contracts/`.
+7. Regenerate the full marked contract list in `docs/_rules/index.md` from every existing contract file.
+8. Report changed paths. Do not commit or push.
 
-- A behavior rule that future features must not violate.
-- A contract around data storage, transaction boundaries, APIs, permissions, events, or file ownership.
-- A short spec that establishes how future work should approach a recurring domain or workflow.
-- A decision that should trigger discussion if a later requirement conflicts with it.
+Completion criterion: every recorded rule is supported by repository evidence, has a clear scope, and is specific enough for a future agent to compare new requirements against it.
+
+## Durable Filter
+
+Record:
+
+- Behavior rules future features must not violate.
+- Contracts around data storage, transaction boundaries, APIs, permissions, events, or file ownership.
+- Short specs for recurring domains or workflows.
+- Decisions that should trigger discussion if later requirements conflict.
 
 Do not record:
 
@@ -44,15 +53,7 @@ Do not record:
 - Refactors that do not establish future constraints.
 - Typos, small test-only changes, or cleanup with no durable rule.
 
-If no durable rule, contract, or short spec exists, respond with:
-
-```text
-No durable contract to record.
-```
-
-Do not create a contract file or update the index in that case.
-
-## Repository structure
+## Repository Structure
 
 Use this structure:
 
@@ -64,32 +65,9 @@ docs/
       YYYYMMDDHHMM-slug.md
 ```
 
-If `docs/_rules/index.md` or `docs/_rules/contracts/` does not exist, create the missing structure before writing a contract.
+Create missing directories only when there is a durable contract to write. If no durable contract exists, leave `docs/_rules` unchanged.
 
-Bootstrap `docs/_rules/index.md` with:
-
-```md
-# Rules Index
-
-This index lists durable session contracts that future agents should read before changing related behavior.
-
-## Contracts
-
-<!-- retro-man:index:start -->
-_No session contracts recorded yet._
-<!-- retro-man:index:end -->
-```
-
-Only edit content between:
-
-```md
-<!-- retro-man:index:start -->
-<!-- retro-man:index:end -->
-```
-
-Preserve all manual content outside those markers.
-
-## File naming
+## Contract File
 
 Name each contract file:
 
@@ -103,120 +81,44 @@ Rules:
 - Use `YYYYMMDDHHMM` with no separators.
 - Use a short lowercase slug with hyphens.
 - Do not add random IDs or hashes by default.
-- If the target filename already exists, do not overwrite it silently. Ask before choosing a suffix or replacing the file.
+- If the target filename already exists, ask before choosing a suffix or replacing the file.
 
 Follow the repository's date policy. If the repository requires `dayjs`, use `dayjs.utc()` with the UTC plugin and do not use native JavaScript `Date`. If no approved way to compute the UTC timestamp is available, ask the user for the UTC timestamp rather than guessing.
 
-## Contract file template
+Load [references/contract-template.md](references/contract-template.md) before writing the contract body.
 
-Each contract file must start with YAML frontmatter:
+## Index Update
 
-```md
----
-title: Usecase Writing Contract
-slug: usecase
-created_at: 2026-06-29T07:25:00Z
-session_type: feature
-scope:
-  - usecases
-  - transaction.db
-summary:
-  - Usecases describe user-visible behavior before implementation details.
-  - Transaction boundaries must be stated when a usecase writes to transaction.db.
-index_summary: Usecases define user-visible behavior and must state transaction boundaries when writing transaction.db.
-status: active
----
+After writing a contract file, regenerate `docs/_rules/index.md` from all contract metadata, not just the current session's file.
 
-# Session Contract: Usecase Writing
+Before updating the index, list `docs/_rules/contracts/*.md` from the filesystem. Do not rely only on `git status`, codegraph, or diff output because ignored contract files still belong in the index.
 
-## Context
+Use the helper script whenever it is available. Resolve it in this order:
 
-Shortly explain what was completed and why this contract exists.
+1. Project install: `.opencode/skills/retro-man/scripts/update-rules-index.mjs`
+2. Global OpenCode install: `$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs`
 
-## Rules
+Run the helper from the repository root:
 
-### Rule: Usecases Describe Behavior
-
-Usecases must describe user-visible behavior before implementation details.
-
-#### Why
-
-Explain why this rule matters and what future confusion it prevents.
-
-#### Contract
-
-- State the durable requirement.
-- Name concrete modules, files, commands, data stores, or API boundaries when relevant.
-- Keep the rule specific enough that future agents can compare new requirements against it.
-
-#### Applies when
-
-- Describe the future work situations where this rule should be considered.
-
-## Evidence
-
-- `path/to/relevant-file.ext`
-- `path/to/changed-doc.md`
-
-## Uncertainties
-
-- None
+```bash
+bun .opencode/skills/retro-man/scripts/update-rules-index.mjs
 ```
 
-Required frontmatter fields:
+or:
 
-- `title`: readable contract title.
-- `slug`: filename/grouping slug.
-- `created_at`: UTC ISO8601 timestamp.
-- `session_type`: one of `feature`, `bugfix`, `refactor`, `architecture`, `process`, or another clear category when needed.
-- `scope`: keywords, paths, modules, data stores, or domain concepts that help future skills match relevant contracts.
-- `summary`: one to three concise bullets for the index.
-- `status`: usually `active`.
-
-Optional frontmatter fields:
-
-- `index_summary`: one compact routing sentence for `docs/_rules/index.md`; preferred when the full summary bullets are too long.
-- `supersedes`: list of older contract paths this new contract replaces or changes.
-- `related`: list of related contract paths.
-
-## Writing rules
-
-Write contract records in a decision-oriented style:
-
-- Start each rule with a direct normative statement.
-- Prefer concrete file paths, identifiers, data stores, API names, or commands over vague references.
-- Explain `Why` so future agents understand the tradeoff, not just the command.
-- Keep `Contract` bullets testable or reviewable.
-- Use `Applies when` to prevent over-broad interpretation.
-- Use `Evidence` to ground the rule in repository artifacts.
-- Use `Uncertainties` when evidence is incomplete. Do not invent confident rules.
-
-The record should be short enough for future agents to read, but precise enough to trigger discussion when a later requirement conflicts with it.
-
-## Supersession policy
-
-Use append-only supersession in v1.
-
-If a new session changes or replaces an older contract, write a new contract file and add:
-
-```yaml
-supersedes:
-  - contracts/202606290725-usecase.md
+```bash
+bun "$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs"
 ```
 
-Do not automatically edit the old contract's `status`. Changing older contract status is a team decision or a separate workflow.
+Load [references/index-format.md](references/index-format.md) if the helper is unavailable or if you need to inspect the expected compact index format.
 
-## Grounding workflow
+After the helper runs, compare its reported output count with the filesystem count of `docs/_rules/contracts/*.md`. If the helper output count is lower, stop and investigate before reporting success.
 
-Before writing:
+The helper is fail-closed. If any markdown file under `docs/_rules/contracts/` has missing frontmatter or required metadata, fix the metadata or ask the user before continuing; do not delete or ignore an invalid contract to make the index update pass.
 
-1. Inspect `git status --short`.
-2. Inspect relevant diffs or changed files.
-3. Read source/docs files that support the contract.
-4. Identify durable rules and scopes.
-5. If evidence is weak, either ask a targeted question or record the uncertainty.
+## Ask Only When Needed
 
-Ask only when ambiguity could make the contract wrong, such as:
+Ask a targeted question only when ambiguity could make the contract wrong:
 
 - The title or slug is unclear.
 - The rule would be broader than the completed work supports.
@@ -224,80 +126,11 @@ Ask only when ambiguity could make the contract wrong, such as:
 - A filename collision exists.
 - The session appears to supersede an older contract and the user must decide how to handle it.
 
-Otherwise, write autonomously.
+Otherwise, write autonomously and record uncertainty in the contract.
 
-## Index update
+## Final Response
 
-After writing a contract file, regenerate `docs/_rules/index.md` from contract metadata.
-
-Never rebuild `docs/_rules/index.md` from only the contracts created in the current session. The index is a full routing table for all durable records, so partial rewrites hide old contracts from future `grill-design` sessions.
-
-Before updating the index, List `docs/_rules/contracts/*.md` from the filesystem. Do not rely only on `git status`, codegraph, or diff output because many projects ignore `docs/`, and ignored contract files still belong in the index.
-
-Use the helper script whenever it is available. Resolve it in this order:
-
-1. Project install: `.opencode/skills/retro-man/scripts/update-rules-index.mjs`
-2. Global OpenCode install: `$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs`
-
-If this skill is installed at `.opencode/skills/retro-man/`, run:
-
-```bash
-bun .opencode/skills/retro-man/scripts/update-rules-index.mjs
-```
-
-If only the global install exists, run:
-
-```bash
-bun "$HOME/.config/opencode/skills/retro-man/scripts/update-rules-index.mjs"
-```
-
-Run the helper from the repository root so it resolves `docs/_rules` correctly.
-
-The index should:
-
-- Be a compact routing table, not a mini contract.
-- Preserve manual content outside the marker block.
-- Show `active` contracts first.
-- Show other statuses after active contracts.
-- Sort newest first by `created_at` within each status group.
-- Use one bullet entry per contract.
-- Show the contract title as a link.
-- Show status, compact created timestamp, and compact scope inline on the next line.
-- Show one short routing summary sentence on the next line.
-- Keep detailed rules, evidence, and full summaries inside the contract file.
-- Show `supersedes:` inline only when present.
-
-Use this compact index format:
-
-```md
-<!-- retro-man:index:start -->
-- [POS Unit Dropdown Must Stay Enabled](contracts/202606290509-pos-unit-dropdown-always-enabled.md)  
-  `active` | `2026-06-29T05:09Z` | scope: `pos`, `ui-select`, `pos-units`  
-  Normal-unit POS products keep the unit dropdown enabled; single-option selects stay clickable; special/no-unit products render a dash.
-<!-- retro-man:index:end -->
-```
-
-Index summary guidance:
-
-- Prefer `index_summary` when available.
-- Combine frontmatter `summary` bullets into one sentence only when `index_summary` is absent.
-- Keep the index summary under about 30 words.
-- Prefer domain keywords in index scope over long file paths.
-- Keep concrete file paths in the contract body and frontmatter.
-
-After the helper runs, compare its output count with the filesystem count of `docs/_rules/contracts/*.md`. If the helper output count is lower than the filesystem contract count, stop and investigate before reporting success.
-
-The helper is fail-closed. If any markdown file under `docs/_rules/contracts/` has missing frontmatter or missing required metadata, the helper must exit non-zero and must not rewrite `docs/_rules/index.md`. Fix the contract metadata or ask the user before continuing; do not delete or ignore an invalid contract to make the index update pass.
-
-If the helper script is unavailable, update the marker block manually using the same format only after reading every markdown file under `docs/_rules/contracts/`. Manual fallback must include every parseable contract with `title` and `created_at`, not just newly created files.
-
-## Git policy
-
-Never commit or push. `retro-man` creates or updates files only. The user or team decides commit scope and timing.
-
-## Final response
-
-End with a concise report:
+If a contract was recorded:
 
 ```text
 Recorded durable session contract.

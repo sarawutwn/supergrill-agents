@@ -47,9 +47,13 @@ Install-GrillFile -Source "agents/explore.md" -Destination (Join-Path $ConfigDir
 Install-GrillFile -Source "agents/general.md" -Destination (Join-Path $ConfigDir "agents/general.md")
 Install-GrillFile -Source "skills/caveman/SKILL.md" -Destination (Join-Path $ConfigDir "skills/caveman/SKILL.md")
 Install-GrillFile -Source "skills/create-plan/SKILL.md" -Destination (Join-Path $ConfigDir "skills/create-plan/SKILL.md")
+Install-GrillFile -Source "skills/create-plan/references/plan-template.md" -Destination (Join-Path $ConfigDir "skills/create-plan/references/plan-template.md")
+Install-GrillFile -Source "skills/create-plan/references/task-template.md" -Destination (Join-Path $ConfigDir "skills/create-plan/references/task-template.md")
 Install-GrillFile -Source "skills/grill-design/SKILL.md" -Destination (Join-Path $ConfigDir "skills/grill-design/SKILL.md")
 Install-GrillFile -Source "skills/guideline/SKILL.md" -Destination (Join-Path $ConfigDir "skills/guideline/SKILL.md")
 Install-GrillFile -Source "skills/retro-man/SKILL.md" -Destination (Join-Path $ConfigDir "skills/retro-man/SKILL.md")
+Install-GrillFile -Source "skills/retro-man/references/contract-template.md" -Destination (Join-Path $ConfigDir "skills/retro-man/references/contract-template.md")
+Install-GrillFile -Source "skills/retro-man/references/index-format.md" -Destination (Join-Path $ConfigDir "skills/retro-man/references/index-format.md")
 Install-GrillFile -Source "skills/retro-man/scripts/update-rules-index.mjs" -Destination (Join-Path $ConfigDir "skills/retro-man/scripts/update-rules-index.mjs")
 Install-GrillFile -Source "skills/scrutinize/SKILL.md" -Destination (Join-Path $ConfigDir "skills/scrutinize/SKILL.md")
 
@@ -60,8 +64,12 @@ Write-Host "- agents/explore.md"
 Write-Host "- agents/general.md"
 Write-Host "- skills/caveman/SKILL.md"
 Write-Host "- skills/create-plan/SKILL.md"
+Write-Host "- skills/create-plan/references/plan-template.md"
+Write-Host "- skills/create-plan/references/task-template.md"
 Write-Host "- skills/grill-design/SKILL.md"
 Write-Host "- skills/guideline/SKILL.md"
 Write-Host "- skills/retro-man/SKILL.md"
+Write-Host "- skills/retro-man/references/contract-template.md"
+Write-Host "- skills/retro-man/references/index-format.md"
 Write-Host "- skills/retro-man/scripts/update-rules-index.mjs"
 Write-Host "- skills/scrutinize/SKILL.md"

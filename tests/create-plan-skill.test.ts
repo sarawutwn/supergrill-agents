@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 
 const skillSource = await Bun.file("skills/create-plan/SKILL.md").text();
+const planTemplateSource = await Bun.file("skills/create-plan/references/plan-template.md").text();
+const taskTemplateSource = await Bun.file("skills/create-plan/references/task-template.md").text();
 
 function section(source: string, heading: string, nextHeading?: string) {
   const start = source.indexOf(heading);
@@ -12,14 +14,14 @@ function section(source: string, heading: string, nextHeading?: string) {
 
 describe("create-plan skill", () => {
   test("Task Overview requires the TDD sub-skill and TDD-shaped task summaries", () => {
-    const taskOverview = section(skillSource, "## Task Overview", "## Task Structure");
+    const taskOverview = section(planTemplateSource, "## Task Overview");
 
     expect(taskOverview).toContain("REQUIRED SUB-SKILL: Use superpowers:test-driven-development");
     expect(taskOverview).toContain("TDD slice:");
   });
 
   test("Task Overview makes parallel execution explicit by default", () => {
-    const taskOverview = section(skillSource, "## Task Overview", "## Task Structure");
+    const taskOverview = section(planTemplateSource, "## Task Overview");
 
     expect(taskOverview).toContain("Parallel-first:");
     expect(taskOverview).toContain("Spawn separate sub-agents");
@@ -29,7 +31,7 @@ describe("create-plan skill", () => {
   });
 
   test("Task Structure makes every implementation task follow the TDD cycle", () => {
-    const taskStructure = section(skillSource, "## Task Structure");
+    const taskStructure = section(taskTemplateSource, "# Task Template");
 
     expect(taskStructure).toContain("Use `superpowers:test-driven-development`");
     expect(taskStructure).toContain("Write the failing test");
@@ -40,11 +42,17 @@ describe("create-plan skill", () => {
   });
 
   test("Task Structure requires each task to declare parallel safety", () => {
-    const taskStructure = section(skillSource, "## Task Structure");
+    const taskStructure = section(taskTemplateSource, "# Task Template");
 
     expect(taskStructure).toContain("**Parallelization:**");
     expect(taskStructure).toContain("Can run with:");
     expect(taskStructure).toContain("Must wait for:");
     expect(taskStructure).toContain("Race risk:");
+  });
+
+  test("SKILL.md points to disclosed templates instead of inlining them", () => {
+    expect(skillSource).toContain("references/plan-template.md");
+    expect(skillSource).toContain("references/task-template.md");
+    expect(skillSource).toContain("Final Gate");
   });
 });

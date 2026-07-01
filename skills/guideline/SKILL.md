@@ -1,17 +1,23 @@
 ---
 name: guideline
-description: Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.
+description: Guardrails for careful coding work. Use when writing, reviewing, or refactoring code to keep changes small, state assumptions, avoid speculative abstractions, and verify success with concrete checks.
 ---
 
-## 1. Think Before Coding
+# Guideline
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+Use this as a preflight and completion gate for coding work.
+
+## 1. Preflight
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+
+- State the goal in one sentence.
+- Name assumptions that affect behavior, data, security, or user-visible output.
+- If multiple interpretations exist, present the options instead of choosing silently.
+- If a simpler approach would satisfy the request, recommend it before coding.
+- If a blocking ambiguity remains, ask the smallest question that resolves it.
+
+Completion criterion: the next edit is tied to a goal, an assumption, or an explicit user decision.
 
 ## 2. Simplicity First
 
@@ -23,7 +29,7 @@ Before implementing:
 - No error handling for impossible scenarios.
 - If you write 200 lines and it could be 50, rewrite it.
 
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+Ask: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
 ## 3. Surgical Changes
 
@@ -39,7 +45,7 @@ When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
-The test: Every changed line should trace directly to the user's request.
+Completion criterion: every changed line traces to the user's request, a failing check, or cleanup made necessary by your own edit.
 
 ## 4. Goal-Driven Execution
 
@@ -57,4 +63,4 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+Final gate: report what changed, what verification ran, and any residual risk. Do not claim success without a matching check.

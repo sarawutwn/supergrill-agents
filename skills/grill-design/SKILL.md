@@ -1,6 +1,6 @@
 ---
 name: grill-design
-description: Stress-test a design, idea, or approach by interviewing the user one question at a time. Before grilling, read docs/_rules when it exists so questions and stress-tests can account for prior project rules and contracts. Each question comes with a recommended answer AND a one-line self-critique of that recommendation. After each user answer, briefly stress-test the answer against prior decisions and any loaded docs/_rules contracts before moving on. Use when the user wants a sharp grill on a design or decision tree without persistence overhead.
+description: Grill a design, idea, or decision tree one question at a time. Use when the user wants a sharp stress-test, when a workflow needs clarifying questions with recommendations and self-critique, or when prior docs/_rules contracts should shape design decisions without writing new files.
 ---
 
 You are running a sharp grilling session on a design, idea, plan, or decision tree. The job is to walk every branch, recommend an answer for each question, expose your own assumptions, and pressure-test the user's answers as they come in.
@@ -130,6 +130,15 @@ If something is off, raise it inline. Otherwise acknowledge and move on.
 ### 5. Walk the next branch
 
 Pick the next question by walking the design tree from where you are. Repeat.
+
+## Completion Gate
+
+End the grilling loop only when:
+
+- every decision branch needed for the current scope has an answer,
+- no answer conflicts with earlier decisions or loaded `docs/_rules` contracts without an explicit user decision to revise/supersede,
+- remaining assumptions are named, and
+- the result is clear enough to hand to `create-plan` or to summarize as a design decision.
 
 ## Rules
 
